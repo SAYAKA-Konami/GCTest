@@ -9,7 +9,7 @@ RUN  mvn clean package
 
 From registry.access.redhat.com/ubi8/openjdk-8-runtime:1.16-2
 # 将打包后的jar包拷贝到容器中
-COPY --from=builder /target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
+COPY --from=builder target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
 EXPOSE 8080
 ENV JAVA_OPTS="\
 -server \

@@ -9,7 +9,7 @@ RUN  mvn clean package
 
 From java:openjdk-8u111-jre-alpine
 # 将打包后的jar包拷贝到容器中
-COPY --from=builder /target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
+COPY --from=builder target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
 EXPOSE 8080
 ENV JAVA_OPTS="\
 -server \
