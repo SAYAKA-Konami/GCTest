@@ -1,0 +1,33 @@
+FROM maven:latest AS builder
+LABEL authors="nan"
+# 将项目的pom文件拷贝到容器中
+ADD  pom.xml pom.xml
+# 将源代码拷贝到容器中
+ADD  src src
+# 执行maven命令打包
+RUN  mvn clean package
+
+From registry.access.redhat.com/ubi8/openjdk-8-runtime:1.16-2
+# 将打包后的jar包拷贝到容器中
+COPY --from=builder /target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
+EXPOSE 8080
+ENV JAVA_OPTS="\
+-server \
+-XX:+UseShenandoahGC \
+-Xms1.6G \
+-Xmx1.6G \
+-verbose:gc \
+-XX+PrintGCDetails \
+-Xloggc:/gc.log \
+-XX:+PrintGCDateStamps \
+-XX:+ALwaysPreTouch"
+
+
+
+
+
+
+
+
+
+
