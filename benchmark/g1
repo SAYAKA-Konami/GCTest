@@ -1,0 +1,33 @@
+FROM maven:latest AS builder
+LABEL authors="nan"
+# 将项目的pom文件拷贝到容器中
+ADD  pom.xml pom.xml
+# 将源代码拷贝到容器中
+ADD  src src
+# 执行maven命令打包
+RUN  mvn clean package
+
+From java:openjdk-8u111-jre-alpine
+# 将打包后的jar包拷贝到容器中
+COPY --from=builder /target/benchmark-1.0-SNAPSHOT.jar /benchmark.jar \
+EXPOSE 8080
+ENV JAVA_OPTS="\
+-server \
+-XX:+UseG1GC \
+-Xms1.6G \
+-Xmx1.6G \
+-verbose:gc \
+-XX+PrintGCDetails \
+-Xloggc:/gc.log \
+-XX:+PrintGCDateStamps \
+-XX:+ALwaysPreTouch"
+
+
+
+
+
+
+
+
+
+
